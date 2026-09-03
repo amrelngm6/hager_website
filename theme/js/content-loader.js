@@ -16,7 +16,7 @@
   // ── Config ──────────────────────────────────────────────────────────────
   // Point this at your backend. During development this is typically
   // proxied through Vite or served directly. Update as needed.
-  const API_BASE = window.__CMS_API__ || 'http://localhost:3005/api/v1';
+  const API_BASE = window.__CMS_API__ || ':3005/api/v1';
 
   // ── Helpers ─────────────────────────────────────────────────────────────
   function setHTML(selector, html) {
