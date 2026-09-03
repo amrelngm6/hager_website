@@ -13,12 +13,12 @@
 (async function () {
   'use strict';
 
-  // ── Config ──────────────────────────────────────────────────────────────
+  // -- Config --------------------------------------------------------------
   // Point this at your backend. During development this is typically
   // proxied through Vite or served directly. Update as needed.
   const API_BASE = window.__CMS_API__ || ':3005/api/v1';
 
-  // ── Helpers ─────────────────────────────────────────────────────────────
+  // -- Helpers -------------------------------------------------------------
   function setHTML(selector, html) {
     const el = document.querySelector(selector);
     if (el && html !== undefined && html !== null) el.innerHTML = html;
@@ -42,7 +42,7 @@
     return `<li${actionAttr}${linkAttr}${classAttr}>${btn.label}</li>`;
   }
 
-  // ── Fetch content ────────────────────────────────────────────────────────
+  // -- Fetch content --------------------------------------------------------
   let content = {};
   try {
     const res = await fetch(`${API_BASE}/content`, { credentials: 'include' });
@@ -56,7 +56,7 @@
     return;
   }
 
-  // ── General settings ─────────────────────────────────────────────────────
+  // -- General settings -----------------------------------------------------
   const general = content.general || {};
   if (general.siteName || general.siteTitle) {
     document.title = `${general.siteName || ''} | ${general.siteTitle || ''}`;
@@ -72,7 +72,7 @@
     if (skinEl) skinEl.setAttribute('href', `css/skins/${general.activeSkin}`);
   }
 
-  // ── Intro screen ─────────────────────────────────────────────────────────
+  // -- Intro screen ---------------------------------------------------------
   const intro = content.intro || {};
   if (intro.greeting) {
     const helloSpan = document.querySelector('.hello span');
@@ -102,7 +102,7 @@
     }
   }
 
-  // ── About section ─────────────────────────────────────────────────────────
+  // -- About section ---------------------------------------------------------
   const about = content.about || {};
   const aboutEl = document.getElementById('flow-about');
   if (aboutEl) {
@@ -125,7 +125,7 @@
     if (about.triggers) aboutEl.setAttribute('data-triggers', about.triggers);
   }
 
-  // ── Skills section ────────────────────────────────────────────────────────
+  // -- Skills section --------------------------------------------------------
   const skills = content.skills || {};
   const skillsEl = document.getElementById('flow-skills');
   if (skillsEl) {
@@ -164,7 +164,7 @@
     if (skills.triggers) skillsEl.setAttribute('data-triggers', skills.triggers);
   }
 
-  // ── Projects section ──────────────────────────────────────────────────────
+  // -- Projects section ------------------------------------------------------
   const projects = content.projects || {};
   const projEl = document.getElementById('flow-projects');
   if (projEl) {
@@ -203,7 +203,7 @@
     if (projects.triggers) projEl.setAttribute('data-triggers', projects.triggers);
   }
 
-  // ── Clients section ───────────────────────────────────────────────────────
+  // -- Clients section -------------------------------------------------------
   const clients = content.clients || {};
   const clientsEl = document.getElementById('flow-clients');
   if (clientsEl) {
@@ -226,7 +226,7 @@
     if (clients.triggers) clientsEl.setAttribute('data-triggers', clients.triggers);
   }
 
-  // ── Contact section ───────────────────────────────────────────────────────
+  // -- Contact section -------------------------------------------------------
   const contact = content.contact || {};
   const contactEl = document.getElementById('flow-contact');
   if (contactEl) {
@@ -257,7 +257,7 @@
     if (contact.triggers) contactEl.setAttribute('data-triggers', contact.triggers);
   }
 
-  // ── Generic flow sections ─────────────────────────────────────────────────
+  // -- Generic flow sections -------------------------------------------------
   // These sections (hello, hobbies, age, cv, education, experience, awards,
   // msg_success, error) all follow the generic-flow data shape:
   // { blocks: [...], buttons: [...], triggers: '' }
@@ -315,7 +315,7 @@
     }
   });
 
-  // ── Hobbies: rebuild list-with-icons correctly ───────────────────────────
+  // -- Hobbies: rebuild list-with-icons correctly ---------------------------
   const hobbies = content.hobbies || {};
   const hobbiesEl = document.getElementById('flow-hobbies');
   if (hobbiesEl && Array.isArray(hobbies.blocks)) {
