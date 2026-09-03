@@ -16,9 +16,6 @@ const loginUser = async (emailOrUsername, password) => {
     if (!user) {
         throw (0, error_middleware_1.createError)('User not found', 401);
     }
-    if (!user.is_active) {
-        throw (0, error_middleware_1.createError)('User is inactive', 403);
-    }
     const valid = await bcryptjs_1.default.compare(password, user.password_hash);
     if (!valid) {
         throw (0, error_middleware_1.createError)('Invalid password', 401);

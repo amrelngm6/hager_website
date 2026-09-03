@@ -20,10 +20,6 @@ export const loginUser = async (
     throw createError('User not found', 401);
   }
 
-  if (!user.is_active) {
-    throw createError('User is inactive', 403);
-  }
-
   const valid = await bcrypt.compare(password, user.password_hash);
   if (!valid) {
     throw createError('Invalid password', 401);
