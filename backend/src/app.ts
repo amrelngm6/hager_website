@@ -21,6 +21,9 @@ const app = express();
 // ── Security headers ────────────────────────────────────────────────────────
 app.use(helmet());
 
+// -- Static Media --------------------------------------
+app.use(express.static('/var/www/hager.medians.tech/backend/dist/webroot'));
+
 // ── CORS ────────────────────────────────────────────────────────────────────
 app.use(
   cors({

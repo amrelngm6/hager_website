@@ -23,6 +23,8 @@ const config_2 = require("./config");
 const app = (0, express_1.default)();
 // ── Security headers ────────────────────────────────────────────────────────
 app.use((0, helmet_1.default)());
+// -- Static Media --------------------------------------
+app.use(express_1.default.static('/var/www/hager.medians.tech/backend/dist/webroot'));
 // ── CORS ────────────────────────────────────────────────────────────────────
 app.use((0, cors_1.default)({
     origin: config_1.default.CORS_ORIGIN,
