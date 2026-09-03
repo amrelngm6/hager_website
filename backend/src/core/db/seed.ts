@@ -4,10 +4,10 @@ import pool, { query } from '../database/pool';
 async function seed() {
   console.log('[seed] Seeding database...');
 
-  const passwordHash = await bcrypt.hash('Medians', 12);
+  const passwordHash = await bcrypt.hash('Medians1', 12);
   await query(
     `INSERT INTO users (first_name, email, password_hash) VALUES (?,?,?) `,
-    ['Admin', 'admin@localhost', passwordHash]
+    ['Admin', 'admin@medians.tech', passwordHash]
   );
 
   console.log('[seed] Done.');
