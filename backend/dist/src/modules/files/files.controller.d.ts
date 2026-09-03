@@ -1,0 +1,17 @@
+import { Response, NextFunction } from 'express';
+import { AuthenticatedRequest } from '../../types';
+export declare const list: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const read: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const write: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const mkdir: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const createFile: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const remove: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const bulkRemove: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const rename: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const copy: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const getPerms: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const setPerms: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const download: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const upload: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const compress: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const extract: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;

@@ -1,0 +1,20 @@
+{
+  "page": "databases",
+  "title": "Databases",
+  "url": "/databases",
+  "description": "Manage MySQL databases and database users",
+  "permissions": ["database.view"],
+  "actions": [
+    {
+      "id": "create_database",
+      "label": "Create Database",
+      "url": "/databases/create",
+      "permission": "database.create"
+    },
+    {
+      "id": "delete_database",
+      "label": "Delete Database",
+      "permission": "database.delete"
+    }
+  ]
+}
