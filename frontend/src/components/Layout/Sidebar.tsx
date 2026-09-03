@@ -3,8 +3,6 @@ import {
   LayoutDashboard,
   Users,
   Sparkles,
-  GitBranch,
-  Play,
   Zap,
   FileEdit,
 } from 'lucide-react';
