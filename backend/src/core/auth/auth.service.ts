@@ -12,17 +12,21 @@ export const loginUser = async (
   // (and used double-quoted string literals, which aren't valid MySQL syntax
   // by default anyway). Never interpolate user input into SQL text.
   const user = await queryOne<User>(
-    `SELECT * FROM users WHERE (email = ? AND status = 'active')`,
+    `SELECT * FROM users WHERE (email = ?)`,
     [emailOrUsername]
   );
 
   if (!user) {
-    throw createError('Invalid credentials', 401);
+    throw createError('User not found', 401);
+  }
+
+  if (!user.is_active) {
+    throw createError('User is inactive', 403);
   }
 
   const valid = await bcrypt.compare(password, user.password_hash);
   if (!valid) {
-    throw createError('Invalid credentials', 401);
+    throw createError('Invalid password', 401);
   }
 
   return {
