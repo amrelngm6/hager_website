@@ -12,13 +12,16 @@ const loginUser = async (emailOrUsername, password) => {
     // concatenation of raw user input, which was a SQL injection vulnerability
     // (and used double-quoted string literals, which aren't valid MySQL syntax
     // by default anyway). Never interpolate user input into SQL text.
-    const user = await (0, pool_1.queryOne)(`SELECT * FROM users WHERE (email = ? AND status = 'active')`, [emailOrUsername]);
+    const user = await (0, pool_1.queryOne)(`SELECT * FROM users WHERE (email = ?)`, [emailOrUsername]);
     if (!user) {
-        throw (0, error_middleware_1.createError)('Invalid credentials', 401);
+        throw (0, error_middleware_1.createError)('User not found', 401);
+    }
+    if (!user.is_active) {
+        throw (0, error_middleware_1.createError)('User is inactive', 403);
     }
     const valid = await bcryptjs_1.default.compare(password, user.password_hash);
     if (!valid) {
-        throw (0, error_middleware_1.createError)('Invalid credentials', 401);
+        throw (0, error_middleware_1.createError)('Invalid password', 401);
     }
     return {
         id: user.id,

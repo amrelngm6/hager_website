@@ -40,8 +40,8 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const pool_1 = __importStar(require("../database/pool"));
 async function seed() {
     console.log('[seed] Seeding database...');
-    const passwordHash = await bcryptjs_1.default.hash('Medians', 12);
-    await (0, pool_1.query)(`INSERT INTO users (first_name, email, password_hash) VALUES (?,?,?) `, ['Admin', 'admin@localhost', passwordHash]);
+    const passwordHash = await bcryptjs_1.default.hash('Medians1', 12);
+    await (0, pool_1.query)(`INSERT INTO users (first_name, email, password_hash) VALUES (?,?,?) `, ['Admin', 'admin@medians.tech', passwordHash]);
     console.log('[seed] Done.');
     console.log('[seed] Admin login → email: admin@localhost  password: Medians');
     console.log('[seed] IMPORTANT: change the admin password after first login.');

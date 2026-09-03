@@ -7,7 +7,7 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const pool_1 = __importDefault(require("../database/pool"));
 async function migrate() {
-    const schemaFiles = ['alters.sql', 'mysql.sql', 'content_sections.sql'];
+    const schemaFiles = ['mysql.sql', 'content_sections.sql'];
     try {
         for (const fileName of schemaFiles) {
             const schemaPath = path_1.default.join(__dirname, fileName);

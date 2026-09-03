@@ -24,7 +24,8 @@ const envSchema = zod_1.z.object({
     DB_POOL_MIN: zod_1.z.coerce.number().int().nonnegative().default(2),
     DB_POOL_MAX: zod_1.z.coerce.number().int().positive().default(20),
     // CORS / Socket
-    CORS_ORIGIN: zod_1.z.string().url().default('http://localhost:5173'),
+    // CORS_ORIGIN: z.string().url().default('http://localhost:5173'),
+    CORS_ORIGIN: zod_1.z.string().url().default('http://localhost:8081'),
 });
 const parsed = envSchema.safeParse(process.env);
 if (!parsed.success) {
