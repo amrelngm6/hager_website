@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.extractArchive = exports.compressEntries = exports.getDownloadInfo = exports.setPermissions = exports.getPermissions = exports.copyEntry = exports.renameEntry = exports.bulkDeleteEntries = exports.deleteEntry = exports.createEmptyFile = exports.createDirectory = exports.writeFile = exports.readFile = exports.listDirectory = exports.resolveClientFilePath = exports.resolveSafePath = void 0;
+exports.extractArchive = exports.compressEntries = exports.saveUploadedFiles = exports.getViewInfo = exports.getDownloadInfo = exports.setPermissions = exports.getPermissions = exports.copyEntry = exports.renameEntry = exports.bulkDeleteEntries = exports.deleteEntry = exports.createEmptyFile = exports.createDirectory = exports.writeFile = exports.readFile = exports.listDirectory = exports.resolveClientFilePath = exports.resolveSafePath = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const promises_1 = __importDefault(require("fs/promises"));
@@ -169,37 +169,44 @@ const getDownloadInfo = async (filePath, user) => {
     return { safePath, name: path_1.default.basename(safePath), size: stat.size };
 };
 exports.getDownloadInfo = getDownloadInfo;
-// export const saveUploadedFiles = async (
-//   destDir: string,
-//   files: [],
-//   // files: Express.Multer.File[],
-//   user: SessionUser
-// ): Promise<{ saved: string[]; failed: { name: string; error: string }[] }> => {
-// const safeDestDir = resolveSafePath(destDir, user);
-// const dirStat = await fs.stat(safeDestDir).catch(() => null);
-// if (!dirStat || !dirStat.isDirectory()) {
-//   await Promise.all(files.map((f) => fs.unlink(f.path).catch(() => {})));
-//   throw createError('Destination is not a valid directory', 400);
-// }
-// const saved: string[] = [];
-// const failed: { name: string; error: string }[] = [];
-// for (const file of files) {
-//   try {
-//     const safeName = path.basename(file.originalname);
-//     if (!safeName || safeName === '.' || safeName === '..') throw new Error('Invalid file name');
-//     const targetPath = path.join(safeDestDir, safeName);
-//     if (targetPath !== safeDestDir && !targetPath.startsWith(safeDestDir + path.sep)) {
-//       throw new Error('Invalid file name');
-//     }
-//     await fs.rename(file.path, targetPath);
-//     saved.push(path.posix.join(destDir, safeName));
-//   } catch (err) {
-//     failed.push({ name: file.originalname, error: (err as Error).message });
-//     await fs.unlink(file.path).catch(() => {});
-//   }
-// }
-// return { saved, failed };
-// };
+/** Same as getDownloadInfo but intended for inline preview (e.g. media library thumbnails). */
+const getViewInfo = async (filePath, user) => {
+    const safePath = (0, exports.resolveSafePath)(filePath, user);
+    const stat = await promises_1.default.stat(safePath);
+    if (stat.isDirectory())
+        throw (0, error_middleware_1.createError)('Cannot view a directory', 400);
+    return { safePath, name: path_1.default.basename(safePath) };
+};
+exports.getViewInfo = getViewInfo;
+const saveUploadedFiles = async (destDir, files, user) => {
+    const safeDestDir = (0, exports.resolveSafePath)(destDir, user);
+    const dirStat = await promises_1.default.stat(safeDestDir).catch(() => null);
+    if (!dirStat || !dirStat.isDirectory()) {
+        await Promise.all(files.map((f) => promises_1.default.unlink(f.path).catch(() => { })));
+        throw (0, error_middleware_1.createError)('Destination is not a valid directory', 400);
+    }
+    const saved = [];
+    const failed = [];
+    for (const file of files) {
+        try {
+            const safeName = path_1.default.basename(file.originalname);
+            if (!safeName || safeName === '.' || safeName === '..')
+                throw new Error('Invalid file name');
+            const targetPath = path_1.default.join(safeDestDir, safeName);
+            if (targetPath !== safeDestDir && !targetPath.startsWith(safeDestDir + path_1.default.sep)) {
+                throw new Error('Invalid file name');
+            }
+            await promises_1.default.rename(file.path, targetPath);
+            saved.push(path_1.default.posix.join(destDir, safeName));
+        }
+        catch (err) {
+            failed.push({ name: file.originalname, error: err.message });
+            await promises_1.default.unlink(file.path).catch(() => { });
+        }
+    }
+    return { saved, failed };
+};
+exports.saveUploadedFiles = saveUploadedFiles;
 const compressEntries = async (entryPaths, destPath, format, user) => {
     const safeDest = (0, exports.resolveSafePath)(destPath, user);
     const safeEntries = entryPaths.map((p) => (0, exports.resolveSafePath)(p, user));

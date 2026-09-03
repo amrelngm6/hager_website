@@ -1,6 +1,6 @@
 import { Router } from 'express';
-// import multer from 'multer';
-// import os from 'os';
+import multer from 'multer';
+import os from 'os';
 import {
   list,
   read,
@@ -14,9 +14,10 @@ import {
   getPerms,
   setPerms,
   download,
+  view,
   compress,
   extract,
-  // upload,
+  upload,
 } from './files.controller';
 import { requireAuth } from '../../middlewares/auth.middleware';
 
@@ -26,10 +27,10 @@ router.use(requireAuth);
 
 // Uploads land in the OS temp dir first; files.service moves each one into
 // its validated destination and deletes anything that fails validation.
-// const uploadMiddleware = multer({
-//   dest: os.tmpdir(),
-//   limits: { fileSize: 200 * 1024 * 1024, files: 25 },
-// });
+const uploadMiddleware = multer({
+  dest: os.tmpdir(),
+  limits: { fileSize: 200 * 1024 * 1024, files: 25 },
+});
 
 // Browsing & basic CRUD
 router.get('/', list);
@@ -48,7 +49,8 @@ router.put('/permissions', setPerms);
 
 // Transfer
 router.get('/download', download);
-// router.post('/upload', uploadMiddleware.array('files', 25), upload);
+router.get('/view', view);
+router.post('/upload', uploadMiddleware.array('files', 25), upload);
 
 // Archives
 router.post('/compress', compress);

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { contentApi } from '../../../api/content.api';
+import { MediaPickerInput } from '../../../components/media/MediaPickerInput';
 import { Save, Plus, Trash2 } from 'lucide-react';
 
 interface ClientItem { name: string; logoUrl: string }
@@ -53,7 +54,7 @@ export function ClientsEditor() {
         {form.items.map((c, i) => (
           <div key={i} className="list-item-row">
             <input placeholder="Company Name" value={c.name} onChange={(e) => setClient(i, 'name', e.target.value)} />
-            <input placeholder="Logo URL (e.g. img/clients/logo.png)" value={c.logoUrl} onChange={(e) => setClient(i, 'logoUrl', e.target.value)} />
+            <MediaPickerInput value={c.logoUrl} onChange={(v) => setClient(i, 'logoUrl', v)} placeholder="Logo URL (e.g. img/clients/logo.png)" />
             {c.logoUrl && <img src={c.logoUrl} alt={c.name} className="logo-preview" />}
             <button className="btn-remove" onClick={() => removeClient(i)}><Trash2 size={14} /></button>
           </div>

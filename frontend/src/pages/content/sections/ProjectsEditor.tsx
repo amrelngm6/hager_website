@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { contentApi } from '../../../api/content.api';
+import { MediaPickerInput } from '../../../components/media/MediaPickerInput';
 import { Save, Plus, Trash2, GripVertical } from 'lucide-react';
 
 interface ProjectItem {
@@ -68,7 +69,7 @@ export function ProjectsEditor() {
             <div className="editor-grid">
               <div className="field-group"><label>Title</label><input value={proj.title} onChange={(e) => setProject(i, 'title', e.target.value)} /></div>
               <div className="field-group"><label>Link (optional)</label><input value={proj.link} onChange={(e) => setProject(i, 'link', e.target.value)} placeholder="https://…" /></div>
-              <div className="field-group"><label>Thumbnail Image URL</label><input value={proj.image} onChange={(e) => setProject(i, 'image', e.target.value)} /></div>
+              <div className="field-group"><label>Thumbnail Image URL</label><MediaPickerInput value={proj.image} onChange={(v) => setProject(i, 'image', v)} /></div>
               <div className="field-group">
                 <label>Media Type</label>
                 <select value={proj.mediaType} onChange={(e) => setProject(i, 'mediaType', e.target.value)}>
@@ -82,7 +83,7 @@ export function ProjectsEditor() {
                 <label>Gallery Image URLs</label>
                 {(proj.gallery || []).map((url, gi) => (
                   <div key={gi} className="list-item-row">
-                    <input value={url} onChange={(e) => setGalleryUrl(i, gi, e.target.value)} placeholder="img/projects/big.jpg" />
+                    <MediaPickerInput value={url} onChange={(v) => setGalleryUrl(i, gi, v)} placeholder="img/projects/big.jpg" />
                     <button className="btn-remove" onClick={() => removeGalleryUrl(i, gi)}><Trash2 size={13} /></button>
                   </div>
                 ))}
@@ -93,7 +94,7 @@ export function ProjectsEditor() {
               <div className="field-group"><label>YouTube Video ID</label><input value={proj.youtubeId || ''} onChange={(e) => setProject(i, 'youtubeId', e.target.value)} placeholder="SjJhuZQlkbA" /></div>
             )}
             {proj.mediaType === 'video' && (
-              <div className="field-group"><label>MP4 Video URL</label><input value={proj.videoUrl || ''} onChange={(e) => setProject(i, 'videoUrl', e.target.value)} placeholder="img/video.mp4" /></div>
+              <div className="field-group"><label>MP4 Video URL</label><MediaPickerInput value={proj.videoUrl || ''} onChange={(v) => setProject(i, 'videoUrl', v)} placeholder="img/video.mp4" accept="video" /></div>
             )}
           </div>
         ))}

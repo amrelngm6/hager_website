@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.extract = exports.compress = exports.upload = exports.download = exports.setPerms = exports.getPerms = exports.copy = exports.rename = exports.bulkRemove = exports.remove = exports.createFile = exports.mkdir = exports.write = exports.read = exports.list = void 0;
+exports.extract = exports.compress = exports.upload = exports.view = exports.download = exports.setPerms = exports.getPerms = exports.copy = exports.rename = exports.bulkRemove = exports.remove = exports.createFile = exports.mkdir = exports.write = exports.read = exports.list = void 0;
 const files_service_1 = require("./files.service");
 const list = async (req, res, next) => {
     try {
@@ -178,19 +178,36 @@ const download = async (req, res, next) => {
     }
 };
 exports.download = download;
+const view = async (req, res, next) => {
+    try {
+        const filePath = req.query.path;
+        if (!filePath) {
+            res.status(400).json({ message: 'path is required' });
+            return;
+        }
+        const { safePath, name } = await (0, files_service_1.getViewInfo)(filePath, req.user);
+        res.setHeader('Content-Disposition', `inline; filename="${encodeURIComponent(name)}"`);
+        res.sendFile(safePath);
+    }
+    catch (err) {
+        next(err);
+    }
+};
+exports.view = view;
 const upload = async (req, res, next) => {
-    // try {
-    //   const destDir = (req.body?.path as string) ?? '/';
-    //   const files = (req.files as Express.Multer.File[]) ?? [];
-    //   if (!files.length) {
-    //     res.status(400).json({ message: 'No files provided' });
-    //     return;
-    //   }
-    //   const result = await saveUploadedFiles(destDir, files, req.user!);
-    //   res.status(201).json(result);
-    // } catch (err) {
-    //   next(err);
-    // }
+    try {
+        const destDir = req.body?.path ?? '/';
+        const files = req.files ?? [];
+        if (!files.length) {
+            res.status(400).json({ message: 'No files provided' });
+            return;
+        }
+        const result = await (0, files_service_1.saveUploadedFiles)(destDir, files, req.user);
+        res.status(201).json(result);
+    }
+    catch (err) {
+        next(err);
+    }
 };
 exports.upload = upload;
 const compress = async (req, res, next) => {

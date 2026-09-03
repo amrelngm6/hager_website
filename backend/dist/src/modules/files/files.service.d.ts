@@ -48,5 +48,17 @@ export declare const getDownloadInfo: (filePath: string, user: SessionUser) => P
     name: string;
     size: number;
 }>;
+/** Same as getDownloadInfo but intended for inline preview (e.g. media library thumbnails). */
+export declare const getViewInfo: (filePath: string, user: SessionUser) => Promise<{
+    safePath: string;
+    name: string;
+}>;
+export declare const saveUploadedFiles: (destDir: string, files: Express.Multer.File[], user: SessionUser) => Promise<{
+    saved: string[];
+    failed: {
+        name: string;
+        error: string;
+    }[];
+}>;
 export declare const compressEntries: (entryPaths: string[], destPath: string, format: "zip" | "tar.gz", user: SessionUser) => Promise<void>;
 export declare const extractArchive: (archivePath: string, destDir: string, user: SessionUser) => Promise<void>;

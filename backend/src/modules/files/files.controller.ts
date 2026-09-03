@@ -13,6 +13,8 @@ import {
   getPermissions,
   setPermissions,
   getDownloadInfo,
+  getViewInfo,
+  saveUploadedFiles,
   compressEntries,
   extractArchive,
 } from './files.service';
@@ -181,19 +183,34 @@ export const download = async (req: AuthenticatedRequest, res: Response, next: N
   }
 };
 
+export const view = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const filePath = req.query.path as string;
+    if (!filePath) {
+      res.status(400).json({ message: 'path is required' });
+      return;
+    }
+    const { safePath, name } = await getViewInfo(filePath, req.user!);
+    res.setHeader('Content-Disposition', `inline; filename="${encodeURIComponent(name)}"`);
+    res.sendFile(safePath);
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const upload = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
-  // try {
-  //   const destDir = (req.body?.path as string) ?? '/';
-  //   const files = (req.files as Express.Multer.File[]) ?? [];
-  //   if (!files.length) {
-  //     res.status(400).json({ message: 'No files provided' });
-  //     return;
-  //   }
-  //   const result = await saveUploadedFiles(destDir, files, req.user!);
-  //   res.status(201).json(result);
-  // } catch (err) {
-  //   next(err);
-  // }
+  try {
+    const destDir = (req.body?.path as string) ?? '/';
+    const files = (req.files as Express.Multer.File[]) ?? [];
+    if (!files.length) {
+      res.status(400).json({ message: 'No files provided' });
+      return;
+    }
+    const result = await saveUploadedFiles(destDir, files, req.user!);
+    res.status(201).json(result);
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const compress = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { contentApi } from '../../../api/content.api';
+import { MediaPickerInput } from '../../../components/media/MediaPickerInput';
 import { Save, Plus, Trash2 } from 'lucide-react';
 
 interface IntroButton { label: string; action: string; styleClass: string }
@@ -56,7 +57,7 @@ export function IntroEditor() {
         </div>
         <div className="field-group">
           <label>Avatar Image URL</label>
-          <input value={form.imageUrl} onChange={(e) => setField('imageUrl', e.target.value)} placeholder="img/avatar-intro.png" />
+          <MediaPickerInput value={form.imageUrl} onChange={(v) => setField('imageUrl', v)} placeholder="img/avatar-intro.png" />
         </div>
         <div className="field-group">
           <label>Image Alt Text</label>

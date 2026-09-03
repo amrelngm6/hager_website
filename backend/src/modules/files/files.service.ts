@@ -198,42 +198,52 @@ export const getDownloadInfo = async (
   return { safePath, name: path.basename(safePath), size: stat.size };
 };
 
-// export const saveUploadedFiles = async (
-//   destDir: string,
-//   files: [],
-//   // files: Express.Multer.File[],
-//   user: SessionUser
-// ): Promise<{ saved: string[]; failed: { name: string; error: string }[] }> => {
-  // const safeDestDir = resolveSafePath(destDir, user);
-  // const dirStat = await fs.stat(safeDestDir).catch(() => null);
-  // if (!dirStat || !dirStat.isDirectory()) {
-  //   await Promise.all(files.map((f) => fs.unlink(f.path).catch(() => {})));
-  //   throw createError('Destination is not a valid directory', 400);
-  // }
+/** Same as getDownloadInfo but intended for inline preview (e.g. media library thumbnails). */
+export const getViewInfo = async (
+  filePath: string,
+  user: SessionUser
+): Promise<{ safePath: string; name: string }> => {
+  const safePath = resolveSafePath(filePath, user);
+  const stat = await fs.stat(safePath);
+  if (stat.isDirectory()) throw createError('Cannot view a directory', 400);
+  return { safePath, name: path.basename(safePath) };
+};
 
-  // const saved: string[] = [];
-  // const failed: { name: string; error: string }[] = [];
+export const saveUploadedFiles = async (
+  destDir: string,
+  files: Express.Multer.File[],
+  user: SessionUser
+): Promise<{ saved: string[]; failed: { name: string; error: string }[] }> => {
+  const safeDestDir = resolveSafePath(destDir, user);
+  const dirStat = await fs.stat(safeDestDir).catch(() => null);
+  if (!dirStat || !dirStat.isDirectory()) {
+    await Promise.all(files.map((f) => fs.unlink(f.path).catch(() => {})));
+    throw createError('Destination is not a valid directory', 400);
+  }
 
-  // for (const file of files) {
-  //   try {
-  //     const safeName = path.basename(file.originalname);
-  //     if (!safeName || safeName === '.' || safeName === '..') throw new Error('Invalid file name');
+  const saved: string[] = [];
+  const failed: { name: string; error: string }[] = [];
 
-  //     const targetPath = path.join(safeDestDir, safeName);
-  //     if (targetPath !== safeDestDir && !targetPath.startsWith(safeDestDir + path.sep)) {
-  //       throw new Error('Invalid file name');
-  //     }
+  for (const file of files) {
+    try {
+      const safeName = path.basename(file.originalname);
+      if (!safeName || safeName === '.' || safeName === '..') throw new Error('Invalid file name');
 
-  //     await fs.rename(file.path, targetPath);
-  //     saved.push(path.posix.join(destDir, safeName));
-  //   } catch (err) {
-  //     failed.push({ name: file.originalname, error: (err as Error).message });
-  //     await fs.unlink(file.path).catch(() => {});
-  //   }
-  // }
+      const targetPath = path.join(safeDestDir, safeName);
+      if (targetPath !== safeDestDir && !targetPath.startsWith(safeDestDir + path.sep)) {
+        throw new Error('Invalid file name');
+      }
 
-  // return { saved, failed };
-// };
+      await fs.rename(file.path, targetPath);
+      saved.push(path.posix.join(destDir, safeName));
+    } catch (err) {
+      failed.push({ name: file.originalname, error: (err as Error).message });
+      await fs.unlink(file.path).catch(() => {});
+    }
+  }
+
+  return { saved, failed };
+};
 
 export const compressEntries = async (
   entryPaths: string[],

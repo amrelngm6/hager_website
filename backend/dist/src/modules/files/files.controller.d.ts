@@ -12,6 +12,7 @@ export declare const copy: (req: AuthenticatedRequest, res: Response, next: Next
 export declare const getPerms: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
 export declare const setPerms: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
 export declare const download: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const view: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
 export declare const upload: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
 export declare const compress: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
 export declare const extract: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;

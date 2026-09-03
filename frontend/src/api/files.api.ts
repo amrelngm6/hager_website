@@ -56,6 +56,11 @@ export const filesApi = {
     return `${base}/files/download?path=${encodeURIComponent(path)}`;
   },
 
+  viewUrl: (path: string) => {
+    const base = (client.defaults.baseURL ?? '').replace(/\/$/, '');
+    return `${base}/files/view?path=${encodeURIComponent(path)}`;
+  },
+
   upload: (path: string, files: File[], onProgress?: (percent: number) => void) => {
     const formData = new FormData();
     formData.append('path', path);

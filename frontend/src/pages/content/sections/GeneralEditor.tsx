@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { contentApi } from '../../../api/content.api';
+import { MediaPickerInput } from '../../../components/media/MediaPickerInput';
 import { Save } from 'lucide-react';
 
 interface GeneralData {
@@ -57,7 +58,7 @@ export function GeneralEditor() {
         </div>
         <div className="field-group">
           <label>Chat Avatar URL</label>
-          <input value={form.chatAvatarUrl} onChange={(e) => setField('chatAvatarUrl', e.target.value)} placeholder="img/chat-avatar.png" />
+          <MediaPickerInput value={form.chatAvatarUrl} onChange={(v) => setField('chatAvatarUrl', v)} placeholder="img/chat-avatar.png" />
         </div>
       </div>
 
