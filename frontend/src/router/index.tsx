@@ -1,4 +1,5 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { AiPage } from '../pages/ai/AiPage';
 import { ProtectedRoute } from './ProtectedRoute';
 import { AppLayout } from '../components/Layout/AppLayout';
 import { LoginPage } from '../pages/auth/LoginPage';
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <Navigate to="/dashboard" replace /> },
           { path: 'dashboard', element: <DashboardPage /> },
+          { path: 'ai', element: <AiPage /> },
           { path: 'users', element: <UsersPage /> },
           { path: 'content', element: <ContentPage /> },
         ],
