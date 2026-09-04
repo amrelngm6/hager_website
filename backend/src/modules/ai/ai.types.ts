@@ -181,7 +181,7 @@ export interface ActionDefinition {
 
   description: string;
 
-  category: 'email' | 'database' | 'domain' | 'php' | 'dns' | 'system' | 'backup' | 'analytics';
+  category?: 'articles' | 'doctors' | 'services' | 'clinics' | 'email' | 'system' | 'other' | 'undefined';
 
   destructive?: boolean;
 

@@ -135,7 +135,7 @@ export interface ActionContext {
 export interface ActionDefinition {
     name: string;
     description: string;
-    category: 'email' | 'database' | 'domain' | 'php' | 'dns' | 'system' | 'backup' | 'analytics';
+    category?: 'articles' | 'doctors' | 'services' | 'clinics' | 'email' | 'system' | 'other' | 'undefined' | null | undefined;
     destructive?: boolean;
     adminOnly?: boolean;
     parameters: {

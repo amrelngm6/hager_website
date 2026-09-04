@@ -28,5 +28,4 @@ export const emailTools: ActionDefinition[] = [
       sendEmail(to, subject, text, html).catch(console.error);
     },
   }
-
 ];
