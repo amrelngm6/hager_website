@@ -3,7 +3,8 @@ import path from 'path';
 import pool from '../database/pool';
 
 async function migrate() {
-  const schemaFiles = ['mysql.sql', 'content_sections.sql'];
+  // const schemaFiles = ['mysql.sql', 'content_sections.sql'];
+  const schemaFiles = ['ai.sql'];
 
   try {
     for (const fileName of schemaFiles) {
