@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   Bot,
   Cpu,
   Download,
   HardDrive,
-  Trash2,
   Zap,
 } from 'lucide-react';
 import {
@@ -20,7 +19,6 @@ import {
   Table,
 } from '../../../components/ui';
 import { aiApi } from '../../../api/ai.api';
-import { useAuthStore } from '../../../store/auth.store';
 import type {
   OllamaModel,
   OllamaPullProgress,
@@ -48,8 +46,6 @@ const formatBytes = (bytes: number): string => {
 
 function ModelsTab() {
   const qc = useQueryClient();
-  const user = useAuthStore((s) => s.user);
-  const isAdmin = user?.role === 'admin';
 
   const [pullModalOpen, setPullModalOpen] = useState(false);
   const [pullModelName, setPullModelName] = useState('');
@@ -75,14 +71,6 @@ function ModelsTab() {
   const status = statusQuery.data?.data;
   const models = modelsQuery.data?.data.models ?? [];
   const runningModels = runningQuery.data?.data.models ?? [];
-
-  const deleteMutation = useMutation({
-    mutationFn: (name: string) => aiApi.deleteModel(name),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['ai', 'models'] });
-      qc.invalidateQueries({ queryKey: ['ai', 'models-running'] });
-    },
-  });
 
   const handlePull = () => {
     if (!pullModelName.trim() || isPulling) return;
@@ -146,28 +134,7 @@ function ModelsTab() {
           {new Date(m.modified_at).toLocaleDateString()}
         </span>
       ),
-    },
-    {
-      key: 'actions',
-      header: '',
-      render: (m: OllamaModel) => (
-        <div className="flex items-center justify-end">
-          {isAdmin ? (
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => deleteMutation.mutate(m.name)}
-              loading={deleteMutation.isPending && deleteMutation.variables === m.name}
-              title="Remove model file"
-            >
-              <Trash2 size={14} className="text-red-500" />
-            </Button>
-          ) : (
-            <span className="text-[10px] text-slate-400">Admin only</span>
-          )}
-        </div>
-      ),
-    },
+    }
   ];
 
   return (
@@ -207,12 +174,10 @@ function ModelsTab() {
           description="Manage LLM binaries stored on your server."
           action={<Badge variant="info">{models.length} models</Badge>}
           btn={
-            isAdmin ? (
               <Button onClick={() => setPullModalOpen(true)}>
                 <Download size={14} /> Pull New LLM
               </Button>
-            ) : undefined
-          }
+            }
         />
         <CardContent className="p-0">
           <Table
