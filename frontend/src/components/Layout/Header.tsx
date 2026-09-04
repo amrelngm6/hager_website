@@ -8,6 +8,11 @@ export function Header() {
     <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between flex-shrink-0">
       <div />
       <div className="flex items-center gap-4">
+        <a href="https://hager.medians.tech" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+          <span className="font-semibold text-gray-800">Website</span>
+        </a>
+      </div>
+      <div className="flex items-center gap-4">
         <div className="flex items-center gap-2  text-gray-600">
           <User size={16} />
           <span className="font-medium">{user?.first_name}</span>
