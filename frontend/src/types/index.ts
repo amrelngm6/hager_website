@@ -151,12 +151,24 @@ export interface OllamaPullProgress {
 }
 
 export interface ChatStreamChunk {
-  type: 'delta' | 'done' | 'error';
+  type: 'delta' | 'done' | 'error' | 'confirmation_request';
   content: string;
   conversation_id?: string;
   message_id?: string;
   model?: string;
+  toolName?: string;
+  toolArgs?: Record<string, unknown>;
+  confirmationMessage?: string;
   token_count?: number;
 }
 
+
+/** Result payload returned by the `generate_report_chart` AI tool. */
+export interface ReportChartResult {
+  chart_type: 'bar' | 'line' | 'area' | 'pie' | 'table';
+  title: string;
+  x_label?: string;
+  y_label?: string;
+  series: { label: string; value: number }[];
+}
 

@@ -8,6 +8,7 @@ const auth_routes_1 = require("../core/auth/auth.routes");
 const user_routes_1 = require("../modules/users/user.routes");
 const content_routes_1 = require("../modules/content/content.routes");
 const files_routes_1 = require("../modules/files/files.routes");
+const ai_routes_1 = require("../modules/ai/ai.routes");
 const apiRouter = (0, express_1.Router)();
 // ---------------------------------------------------------------------------
 // Health check — no auth required
@@ -29,5 +30,6 @@ apiRouter.use('/auth', auth_routes_1.authRouter);
 apiRouter.use('/users', user_routes_1.usersRouter);
 apiRouter.use('/content', content_routes_1.contentRouter);
 apiRouter.use('/files', files_routes_1.filesRouter);
+apiRouter.use('/ai', ai_routes_1.aiRouter);
 exports.default = apiRouter;
 //# sourceMappingURL=index.js.map

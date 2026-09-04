@@ -6,6 +6,7 @@ import { authRouter } from '../core/auth/auth.routes';
 import { usersRouter } from '../modules/users/user.routes';
 import { contentRouter } from '../modules/content/content.routes';
 import { filesRouter } from '../modules/files/files.routes';
+import { aiRouter } from '../modules/ai/ai.routes';
 const apiRouter = Router();
 // ---------------------------------------------------------------------------
 // Health check — no auth required
@@ -27,5 +28,6 @@ apiRouter.use('/auth', authRouter);
 apiRouter.use('/users', usersRouter);
 apiRouter.use('/content', contentRouter);
 apiRouter.use('/files', filesRouter);
+apiRouter.use('/ai', aiRouter);
 
 export default apiRouter;

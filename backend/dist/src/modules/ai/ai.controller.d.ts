@@ -1,0 +1,15 @@
+import { Response, NextFunction } from 'express';
+import { AuthenticatedRequest } from '../../types';
+export declare const chat: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const confirmAction: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const getStatus: (_req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const listModels: (_req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const getModelInfo: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const pullModel: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const deleteModel: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const getRunningModels: (_req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const getSettings: (_req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const updateSettings: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const listConversations: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const getConversation: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const deleteConversation: (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
