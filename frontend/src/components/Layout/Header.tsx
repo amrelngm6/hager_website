@@ -11,8 +11,6 @@ export function Header() {
         <a href="https://hager.medians.tech" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
           <span className="font-semibold text-gray-800">Website</span>
         </a>
-      </div>
-      <div className="flex items-center gap-4">
         <div className="flex items-center gap-2  text-gray-600">
           <User size={16} />
           <span className="font-medium">{user?.first_name}</span>
