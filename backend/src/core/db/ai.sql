@@ -25,8 +25,7 @@ CREATE TABLE IF NOT EXISTS `ai_conversations` (
   `updated_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
   PRIMARY KEY (`id`),
   INDEX `idx_ai_conversations_user` (`user_id`),
-  INDEX `idx_ai_conversations_updated` (`updated_at`),
-  CONSTRAINT `fk_ai_conversations_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+  INDEX `idx_ai_conversations_updated` (`updated_at`)
 );
 
 
